@@ -1,0 +1,99 @@
+{
+	"templates" :{
+	   "rate_upload_errors":{
+		   "subject": "Rate upload Errors",
+		   "path":"templates/rate_upload_errors/template.html",
+		   "requirements":["username","file link"]
+	  },
+	  "new_rate_upload_errors":{
+			"subject": "Rate upload Errors",
+			"path":"templates/new_rate_upload_errors/template.html",
+			"requirements":["username","file link", "exceptionmessage", "error_file_link"]
+	  },
+	  "rate_validated":{
+		   "subject": "Rate Validated successfully",
+		   "path":"templates/rate_validated/template.html",
+		   "requirements":["username","file link","file size", "timestamp"]
+	  },
+	  "rate_inserted":{
+				"subject": "Rate Inserted successfully",
+				"path":"templates/rate_inserted/template.html",
+				"requirements":["username","file link","file size", "timestamp", "error_file_link"]
+		},
+		"blocked_lane_super_user":{
+				"subject": "Rate Activity of {{sheettype}} On Blocked Lane [Super User]",
+				"path":"templates/blocked_lane_super_user/template.html",
+				"requirements":["username","file link","file size", "timestamp", "sheettype", "error_file_link"]
+		},
+		"blocked_lane_normal_user":{
+				"subject": "Rate Activity of {{sheettype}} On Blocked Lane [Normal User]",
+				"path":"templates/blocked_lane_normal_user/template.html",
+				"requirements":["username","file link","file size", "timestamp", "sheettype", "error_file_link"]
+		},
+		"blocked_customer_super_user":{
+				"subject": "Rate Activity of {{sheettype}} For Blocked Customer [Super User]",
+				"path":"templates/blocked_customer_super_user/template.html",
+				"requirements":["username","file link","file size", "timestamp", "sheettype", "customername", "error_file_link", "special_customers"]
+		},
+		"blocked_customer_normal_user":{
+				"subject": "Rate Activity of {{sheettype}} For Blocked Customer [Normal User]",
+				"path":"templates/blocked_customer_normal_user/template.html",
+				"requirements":["username","file link","file size", "timestamp", "sheettype", "customername", "error_file_link", "special_customers"]
+		},
+	  "grdb_cron":{
+		   "subject": "GRDB CRON Stuck List",
+		   "path":"templates/grdb_cron/template.html",
+		   "requirements":[]
+	  },
+	  "quoting_guide_inserted":{
+		   "subject": "Quoting Guide Inserted successfully",
+		   "path":"templates/quoting_guide_inserted/template.html",
+		   "requirements":["username","file link","file size", "timestamp"]
+	  },
+	  "quoting_guide_partly":{
+		   "subject": "Quoting Guide Partly Inserted succesfully",
+		   "path":"templates/quoting_guide_partly/template.html",
+		   "requirements":["username","file link","file size", "timestamp"]
+	  },
+	  "quoting_guide_upload":{
+		   "subject": "Quoting Guide upload Errors",
+		   "path":"templates/quoting_guide_upload/template.html",
+		   "requirements":["username","file link","file size", "timestamp","report"]
+	  },
+	  "notes_config_inserted":{
+		   "subject": "Notes Configuration(Zero Value) Inserted successfully",
+		   "path":"templates/notes_config_inserted/template.html",
+		   "requirements":["username","file link","file size", "timestamp"]
+	  },
+	  "notes_config_upload":{
+		   "subject": "Notes Configuration(Zero Value) upload Errors",
+		   "path":"templates/notes_config_upload/template.html",
+		   "requirements":["username","file link","file size", "timestamp","report"]
+	  },
+	  "rate_locked":{
+		   "subject": "Rate Locked found in GRDB",
+		   "path":"templates/rate_locked/template.html",
+		   "requirements":["username","file link","file size", "timestamp","original_file_link", "error_file_link", "error_file_name"]
+	  },
+	  "superuser_warning_process":{
+		 "subject": "Rate Activity For Blocked Customer ",
+		 "path":"templates/superuser_warning_process/template.html",
+		 "requirements":["username","file link","file size", "timestamp","report","filetype"]
+	},
+	"superuser_warning_block_normaluser":{
+		 "subject": "Rate Activity For Blocked Customer ",
+		 "path":"templates/superuser_warning_block_normaluser/template.html",
+		 "requirements":["username","file link","file size", "timestamp","report","filetype"]
+	},
+	"superuser_warning_block_normaluser_rate":{
+		 "subject": "Rate Activity For Blocked Lanes ",
+		 "path":"templates/superuser_warning_block_normaluser_rate/template.html",
+		 "requirements":["username","file link","file size", "timestamp","report","filetype"]
+	},
+	"superuser_warning_process_rate":{
+		 "subject": "Rate Activity For Blocked Lanes ",
+		 "path":"templates/superuser_warning_process_rate/template.html",
+		 "requirements":["username","file link","file size", "timestamp","report","filetype"]
+	}
+   }
+}

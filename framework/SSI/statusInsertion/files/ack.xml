@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf8'?>
+<Acknowledgement xmlns:ns0="http://www.w3.org/2001/XMLSchemainstance" ns0:noNamespaceSchemaLocation="http://www.wwalliance.com/wiki/images/f/fc/Acknowledgement_version_1.0.0.xsd">
+		<AcknowledgementEnvelope>
+			<SenderID>wwalliance</SenderID>
+			<ReceiverID>edi_agility_prod</ReceiverID>
+			<Password>test</Password>
+			<Type>Acknowledgement_XML</Type>
+			<Version>1.0</Version>
+			<EnvelopeID />
+		</AcknowledgementEnvelope>
+		<AcknowledgementDetails>
+			<CustomerReference />
+			<WWAReference>10165305730</WWAReference>
+			<AcknowledgementType>SSI</AcknowledgementType>
+			<ReferenceNumber />
+			<BookingNumber />
+			<AcknowledgementStatus>A</AcknowledgementStatus>
+			<Remarks>Accepted</Remarks>
+		</AcknowledgementDetails>
+	</Acknowledgement>

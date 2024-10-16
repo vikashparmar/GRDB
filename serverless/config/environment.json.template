@@ -1,0 +1,18 @@
+{
+	"awsRegion": "XXXXXXXXXXXXXXXXXXXXXXX",
+	"accessKeyId": "XXXXXXXXXXXXXXXXXXXXXXX",
+	"secretAccessKey": "XXXXXXXXXXXXXXXXXXXXXXX",
+
+	"commonPoolQueue": "https://sqs.XXXXXXXXXXXXXXXXXXXXXXX.amazonaws.com/XXXXXXXXXXXXXXXXXXXXXXX/grdb-input-queue.fifo",
+	
+	"fileUploadBucket": "GLOBALLY-UNIQUE-BUCKET-NAME",
+	"initialUploadBucket": "GLOBALLY-UNIQUE-BUCKET-NAME",
+	
+	"ecrRepository": "XXXXXXXXXXXXXXXXXXXXXXX.dkr.ecr.ap-south-1.amazonaws.com",
+	
+	"rdsVpcId": "vpc-XXXXXXXXXXXXXXXXXXXXXXX",
+	"rdsVpcCidr": "XXXXX.XXXXX.XXXXX.XXXXX/XXXXX",
+	"rdsVpcRouteTableId": "rtb-XXXXXXXXXXXXXXXXXXXXXXX",
+	
+	"resourceName": "grdb"
+}

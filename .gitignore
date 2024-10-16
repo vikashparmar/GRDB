@@ -1,0 +1,47 @@
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+.idea
+venv
+node_modules
+output
+
+# Testing
+.pytest_cache
+
+# Serverless directories
+.serverless
+
+**/__pycache__
+**/.terraform
+**/.terraform.tfstate.lock.info
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/kubeconfig_test-cluster
+
+**.zip
+
+# Config files
+sqs-listener/*.yaml
+sqs-listener/*.json
+serverless/config/*.json
+terraform/wpa/sqs-consumer-deployment_*.yaml
+terraform/wpa/wpa_*.yaml
+terraform/wpa/deployment.yaml 
+
+# Settings for SQS Listener
+sqs-listener/env

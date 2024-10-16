@@ -1,0 +1,8 @@
+local:
+  inputFiles:
+    - C:/path/to/file.csv
+  jobID: 1000
+  modifyDB: false
+  sendEmail: false
+  recordSQL: false
+  cloudPath: edi_shipco_prod/grdb/08-20-2021/

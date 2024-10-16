@@ -1,0 +1,24 @@
+aws
+  region: xxxxxxx
+  accessKeyId: xxxxxxx
+  secretAccessKey: xxxxxxx
+master:
+  host: xxxxxxxxxxxxxxxxxxxxxxxxxxx
+  port: xxxx
+  user: xxxxxxx
+  pass: xxxxxxx
+  database: xxxx
+log:
+  appName: ssi_engine
+  fileName: ssi_engine.log
+  info: true
+  errors: true
+  memory: true
+smtp:
+  port: 25
+  host: XXXXXXXXXXX
+  user: XXXXXXXXXXX
+  pass: XXXXXXXXXXX
+email:
+  protocol: ses/smtp/smtptls
+  sourceEmail: XXXXXXXXXXXXXXXXXXXXXXX

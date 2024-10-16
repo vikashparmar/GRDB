@@ -1,0 +1,406 @@
+service: ${file(./config/${self:provider.stage}.json):resourceName}
+
+frameworkVersion: "2"
+
+custom:
+  fileUploadBucket: ${file(./config/${self:provider.stage}.json):fileUploadBucket}
+  commonPoolQueue: ${file(./config/${self:provider.stage}.json):commonPoolQueue}
+  initialUploadBucket: ${file(./config/${self:provider.stage}.json):initialUploadBucket}
+  resourceName: ${file(./config/${self:provider.stage}.json):resourceName}
+  profiles:
+    dev: dev
+    prod: prod
+    staging: staging
+  pythonRequirements:
+    dockerizePip: true
+  prune:
+    automatic: true
+    number: 1
+
+provider:
+  name: aws
+  iam:
+    role: ${file(./config/${self:provider.stage}.json):iamArn}
+  vpc:
+    securityGroupIds:
+      - ${file(./config/${self:provider.stage}.json):securityGroupId}
+    subnetIds:
+      - ${file(./config/${self:provider.stage}.json):subNetId1}
+      - ${file(./config/${self:provider.stage}.json):subNetId2}
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  stage: ${opt:stage, 'dev'}
+  region: ${file(./config/${self:provider.stage}.json):awsRegion}
+  profile: ${self:custom.profiles.${opt:stage, self:provider.stage, 'dev'}}
+  tags:
+    Company: WorldWide Alliance
+    Component: ${self:custom.resourceName}-lambda-function
+    Environment: ${opt:stage, self:provider.stage, 'dev'}
+    Product: Ecommerce
+  stackTags:
+    Company: WorldWide Alliance
+    Component: ${self:custom.resourceName}-lambda-function
+    Environment: ${opt:stage, self:provider.stage, 'dev'}
+    Product: Ecommerce
+  apiGateway:
+    shouldStartNameWithService: true
+  environment:
+    RUNTIME: lambda
+    ENVIRONMENT: ${opt:stage, self:provider.stage, 'unknown'}
+    REGION_NAME: ${self:provider.region}
+    ACCESS_KEY_ID: ${file(./config/${self:provider.stage}.json):accessKeyId}
+    SECRET_ACCESS_KEY: ${file(./config/${self:provider.stage}.json):secretAccessKey}
+    RESOURCE_NAME: ${file(./config/${self:provider.stage}.json):resourceName}
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+  include:
+    - ../framework/**
+    - ../sqs-listener/config.yaml
+
+functions:
+  loginMember:
+    handler: auth/loginMember.main
+    description: "WWA Member Login API"
+    events:
+      - http:
+          path: /login
+          method: post
+
+  loginDashboard:
+    handler: auth/loginDashboard.main
+    description: "Dashboard Login Endpoint with username and password"
+    events:
+      - http:
+          path: /dashboard/login
+          method: get
+          cors: true
+
+  createPresignedUrl:
+    handler: files/createPresignedUrl.main
+    description: "Generate pre-signed url to upload file to s3 bucket"
+    events:
+      - http:
+          path: /create-presigned-url
+          method: post
+          cors: true
+
+  authenticateSftpUser:
+    handler: auth/authenticateSftpUser.main
+    timeout: 20
+    description: "Authenticate SFTP user"
+    events:
+      - http:
+          path: /authenticate-sftp-user
+          method: post
+
+  authenticateSftpUserNew:
+    handler: auth/authenticateSftpUserNew.main
+    timeout: 20
+    description: "Authenticate SFTP user by uploading ssh public key"
+    events:
+      - http:
+          path: /authenticate-sftp-user-test
+          method: post
+
+  authenticateSftpUserWithPassword:
+    handler: auth/authenticateSftpUserWithPassword.main
+    timeout: 20
+    description: "Authenticate SFTP user with password"
+    events:
+      - http:
+          path: /authenticate-sftp-user-with-password
+          method: post
+
+  downloadFile:
+    handler: files/downloadFile.main
+    timeout: 20
+    description: "Function to download file"
+    events:
+      - http:
+          path: /download-file
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                file_path: true
+
+  downloadMsgPackFile:
+    handler: files/downloadMsgPackFile.main
+    description: "Function to download original msgpack file after decryption"
+    events:
+      - http:
+          path: /download-original-msgpack
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                file_path: true
+
+  uploadFileTrigger:
+    handler: files/uploadFileTrigger.main
+    description: "Trigger function for S3 bucket upload which adds job table record and SQS message"
+    events:
+      - s3:
+          bucket: ${self:custom.initialUploadBucket}
+          event: s3:ObjectCreated:*
+
+  getUploadLog:
+    handler: reports/getUploadLog.main
+    timeout: 20
+    description: "Generates data for all jobs that are processed for the day"
+    events:
+      - http:
+          path: /report/uploadlog
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                startDate: true
+                endDate: true
+                fileType: false
+                limit: true
+                counter: true
+
+  getLockingRatesLog:
+    handler: reports/getLockingRatesLog.main
+    timeout: 30 
+    description: "Returns the data for locking rate log reports"
+    events:
+      - http:
+          path: /report/lockingrate
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                startDate: true
+                endDate: true
+                fileType: false
+                limit: true
+                counter: true
+
+  getJoblogs:
+    handler: dashboard/getJobLogs.main
+    timeout: 20
+    description: "Generates data for all jobs that are processed for the day"
+    events:
+      - http:
+          path: /logs/jobs
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                dateFrom: true
+                dateTo: true
+                fileName: false
+                limit: true
+                counter: true
+                custName: false
+                officeCode: false
+                fileType: false
+
+  getErrorLogs:
+    handler: dashboard/getErrorLogs.main
+    timeout: 20
+    description: "Generates data for all jobs that have returned an error for a given Date Range"
+    events:
+      - http:
+          path: /logs/errors
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                dateFrom: false
+                dateTo: false
+                dateToday: false
+                custName: false
+                limit: true
+                counter: true
+                officeCode: false
+                fileName: false
+                fileType: false
+
+  graphDataSourceProcessed:
+    handler: dashboard/graphDataSourceProcessed.main
+    timeout: 20
+    description: "Generates all data for Graph pertaining to size of data processed with time and divided by Data Source"
+    events:
+      - http:
+          path: /timeseries/datasourceprocessed
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                startDate: true
+                endDate: true
+                fileType: true
+
+  graphProcessedData:
+    handler: dashboard/graphProcessedData.main
+    timeout: 20
+    description: "Generates all data for Graph pertaining to size of data processed with time"
+    events:
+      - http:
+          path: /timeseries/processed
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                startDate: true
+                endDate: true
+                fileType: true
+
+  getMetricsData:
+    handler: dashboard/getMetricsData.main
+    timeout: 20
+    description: "Generates all metrics related info like file count for a given Date Range"
+    events:
+      - http:
+          path: /metrics
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                startDate: true
+                endDate: true
+                fileType: true
+
+  filterCustomerName:
+    handler: dashboard/filterCustomerName.main
+    timeout: 20
+    description: "Returns all customer name starting with a particular string to be displayed in drop down for filters"
+    events:
+      - http:
+          path: /filterCustName
+          method: get
+          cors: true
+
+  filterOfficeId:
+    handler: dashboard/filterOfficeId.main
+    timeout: 20
+    description: "Returns all office codes starting with a particular string to be displayed in drop down for filters"
+    events:
+      - http:
+          path: /filterOfficeCode
+          method: get
+          cors: true
+
+  exportCsvUploadLog:
+    handler: reports/exportCsvUploadLog.main
+    timeout: 20
+    description: "Export csv file for upload logs report"
+    events:
+      - http:
+          path: /uploadLog/exportcsv
+          method: get
+          cors: true
+
+  exportCsvLockingRates:
+    handler: reports/exportCsvLockingRates.main
+    timeout: 30 
+    description: "Export csv file for locking rates log report"
+    events:
+      - http:
+          path: /lockingRates/exportcsv
+          method: get
+          cors: true
+
+  pushRate:
+    handler: rates/pushRate.main
+    timeout: 20
+    description: "Push rate API to ingest JSON/XML data for validation and insertion."
+    events:
+      - http:
+          path: /rates/pushRate
+          method: post
+          cors: true
+
+  bulkRate:
+    handler: rates/bulkRate.main
+    timeout: 20
+    description: "Bulk rate API to ingest JSON/XML data for validation and insertion."
+    events:
+      - http:
+          path: /rates/bulkRate
+          method: post
+          cors: true
+
+  expireExtend:
+    handler: rates/expireExtend.main
+    timeout: 20
+    description: "Expire Extend API to ingest JSON/XML data for validation and insertion."
+    events:
+      - http:
+          path: /rates/expireExtend
+          method: post
+          cors: true
+
+  markupMarkdown:
+    handler: rates/markupMarkdown.main
+    timeout: 20
+    description: "Markup Markdown API to ingest JSON/XML data for validation and insertion."
+    events:
+      - http:
+          path: /rates/markupMarkdown
+          method: post
+          cors: true
+
+  markupMarkdownExpireExtend:
+    handler: rates/markupMarkdownExpireExtend.main
+    timeout: 20
+    description: "Markup Markdown Expire Extend API to ingest JSON/XML data for validation and insertion."
+    events:
+      - http:
+          path: /rates/markupMarkdownExpireExtend
+          method: post
+          cors: true
+
+  pollJobStatus:
+    handler: rates/pollJobStatus.main
+    timeout: 20
+    description: "Push rate API to poll data and get information back for a job id."
+    events:
+      - http:
+          path: /rates/pollJobStatus
+          method: post
+          cors: true
+
+  getKubePods:
+    handler: pods/pods.main
+    timeout: 20
+    description: "Get data of all kubernetes pods active in the system."
+    events:
+      - http:
+          path: /pods/all
+          method: get
+          cors: true
+
+  deleteKubePods:
+    handler: pods/deletePod.main
+    timeout: 20
+    description: "Delete a pod whose podName is passed."
+    events:
+      - http:
+          path: /pods/delete
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                cPodName: true
+
+plugins:
+  - serverless-python-requirements
+  - serverless-offline
+  - serverless-prune-plugin

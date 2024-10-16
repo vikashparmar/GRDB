@@ -1,0 +1,8 @@
+mysql-connector-python==8.0.23
+boto3==1.19.0
+xmltodict==0.12.0
+msgpack==1.0.2
+requests==2.26.0
+json2xml==3.8.2
+PyYAML==5.4.1
+psutil==5.8.0

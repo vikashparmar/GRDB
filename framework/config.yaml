@@ -1,0 +1,22 @@
+master:
+  host: wwa-database-staging-grdb.covgy0hn6kiz.ap-south-1.rds.amazonaws.com
+  port: 3306
+  user: webapps
+  pass: xxxxxxxxx
+  database: wwa
+
+local:
+  inputFiles:
+    - D:\shipment_status_files\Rag1ph_shipment_status_wwa.14110054.20201002.status_10.xml
+  jobID: 1000
+  fileID: 1000
+  modifyDB: true
+  sendEmail: false
+  recordSQL: false
+  cloudPath: edi_shipco_prod/grdb/08-20-2021/
+
+smtp:
+  port: 25
+  host: localhost
+  # user: XXXXXXXXXXX
+  # pass: XXXXXXXXXXX

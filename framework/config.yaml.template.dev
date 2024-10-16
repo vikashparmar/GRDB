@@ -1,0 +1,9 @@
+local:
+  inputFiles:
+    - xxxxxxxxxxxxxxxxxxxxxxxxx
+  jobID: xxxx
+  fileID: xxxx
+  modifyDB: true
+  sendEmail: false
+  recordSQL: false
+  cloudPath: xxxxxxxxx

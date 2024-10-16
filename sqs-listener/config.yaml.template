@@ -1,0 +1,112 @@
+aws:
+  region: XXXXXXXXXXXXXXXXXXXXXXX
+  accessKeyId: XXXXXXXXXXXXXXXXXXXXXXX
+  secretAccessKey: XXXXXXXXXXXXXXXXXXXXXXX
+  signatureVersion: s3v4
+sqs:
+  inputQueueUrl: https://sqs.XXXXXXXXXXXXXXXXXXXXXXX.amazonaws.com/XXXXXXXXXXXXXXXXXXXXXXX/grdb-input-queue.fifo
+  deadQueueUrl: https://sqs.XXXXXXXXXXXXXXXXXXXXXXX.amazonaws.com/XXXXXXXXXXXXXXXXXXXXXXX/grdb-input-dead-queue.fifo
+  visibilityTimeOut: 3600
+  waitTimeSeconds: 1
+  nonpriorityQueueUrl: https://sqs.XXXXXXXXXXXXXXXXXXXXXXX.amazonaws.com/XXXXXXXXXXXXXXXXXXXXXXX/grdb-non-priority.fifo
+pod:
+  pollCoolOff: 10
+  maxDurationMinutes: 60
+  jobUpdateFrequency: 0
+  heartbeatFrequency: 5
+ftp:
+  destinationRoot: home
+  maxSizeMb: 40
+  importDelaySeconds: 10
+smtp:
+  port: 25
+  host: XXXXXXXXXXX
+  user: XXXXXXXXXXX
+  pass: XXXXXXXXXXX
+log:
+  appName: sqs_consumer
+  fileName: sqs_consumer.log
+  info: true
+  errors: true
+  memory: true
+email:
+  protocol: ses/smtp/smtptls
+  sourceEmail: XXXXXXXXXXXXXXXXXXXXXXX
+  destEmail: XXXXXXXXXXXXXXXXXXXXXXX
+  linkTimeoutSeconds: 3600
+blockedLane:
+  toList: XXXXXXXXXXX, XXXXXXXXXXX
+  ccList: XXXXXXXXXXX, XXXXXXXXXXX
+  bccList: XXXXXXXXXX, XXXXXXXXXXX
+blockedCustomer:
+  toList: XXXXXXXXXXX, XXXXXXXXXXX
+  ccList: XXXXXXXXXXX, XXXXXXXXXXX
+  bccList: XXXXXXXXXX, XXXXXXXXXXX
+push:
+  enable: false
+scaleUOM:
+  KG: KILOGRAMS
+  LBS: POUNDS
+  CBM: CUBIC METER
+  CBF: CUBIC FEET
+  IN: INCHES
+  FT: FEET
+  CM: CENTIMETERS
+  M: METERS
+  W: WEIGHT
+  V: VOLUME
+master:
+  host: XXXXXXXXXXXXXXXXXXXXXXX
+  port: 3306
+  user: XXXXXXXXXXXXXXXXXXXXXXX
+  pass: XXXXXXXXXXXXXXXXXXXXXXX
+  database: grdb
+module:
+  host: XXXXXXXXXXXXXXXXXXXXXXX
+  port: 3306
+  user: XXXXXXXXXXXXXXXXXXXXXXX
+  pass: XXXXXXXXXXXXXXXXXXXXXXX
+  database: grdb
+s3:
+  uploadBucket: XXXXXXXXXXXXXXXXXXXXXXX
+  processingBucket:XXXXXXXXXXXXXXXXXXXXXXX
+  apiLogBucket: XXXXXXXXXXXXXXXXXXXXXXX
+sftp:
+  serverId: XXXXXXXXXXXXXXXXXXXXXXX
+ftpMonitor:
+  host: XXXXXXXXXXXXXXXXXXXXXXX
+  port: 21
+  user: XXXXXXXXXXXXXXXXXXXXXXX
+  pass: XXXXXXXXXXXXXXXXXXXXXXX
+  ftpPath: XXXXXXXXXXXXXXXXXXXXXXX
+  s3Path: XXXXXXXXXXXXXXXXXXXXXXX
+upload:
+  maxSizeMb: 30
+auth:
+  tokenExpirySeconds: XXXX
+api:
+  encodeRequestFile: true
+sqsPriority:
+  priority1QueueUrl: https://sqs.XXXXXXXXXXXXXXXXXXXXXXX.amazonaws.com/XXXXXXXXXXXXXXXXXXXXXXX/grdb-priority-jobs-1
+  priority2QueueUrl: 
+  priority3QueueUrl: 
+  priority4QueueUrl: 
+  priority5QueueUrl: 
+  priority6QueueUrl: 
+  priority7QueueUrl: 
+  priority8QueueUrl: 
+  priority9QueueUrl: 
+  priority10QueueUrl: 
+priority:
+  priority1: 
+  priority2: 
+  priority3: 
+  priority4: 
+  priority5: 
+  priority6: 
+  priority7: 
+  priority8: 
+  priority9: 
+  priority10: 
+job:
+  maxRetries: 2
